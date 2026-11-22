@@ -373,106 +373,118 @@ def draw_leads(d):
         # Source line at bottom
         d.text((cx, y0 + card_h - X(16)), lead["source"], fill=PALETTE["GREY"], font=font_source)
 
-
 def draw_minis(d):
-    minis = [
-        ("GULF OF FINLAND · SECURITY", "C", "Drones hit Russian ship off Finland", "A Kaliningrad-bound vessel caught fire; Helsinki restricts the gulf's airspace and waters.", "AFP", lambda d, x, y: (
-            d.rectangle([x+10, y+18, x+32, y+26], fill=PALETTE["GREY"]),
-            d.line([x+18, y+14, x+24, y+18], fill=PALETTE["RED"], width=2),
-            d.ellipse([x+22, y+10, x+26, y+14], fill=PALETTE["RED"]),
-            d.point([(x+13, y+20), (x+15, y+22), (x+19, y+20)], fill=PALETTE["INK"])
-        )),
-        ("GAZA", "C", "Four killed by Israeli fire", "Three died in a drone strike on a food vehicle in Gaza City; one was shot in Jabalia.", "AFP · Reuters", lambda d, x, y: (
-            d.rectangle([x+10, y+16, x+26, y+28], fill=PALETTE["LINE"]),
-            d.rectangle([x+26, y+20, x+34, y+28], fill=PALETTE["CARD"], outline=PALETTE["LINE"]),
-            d.ellipse([x+13, y+28, x+17, y+32], fill=PALETTE["INK"]),
-            d.ellipse([x+27, y+28, x+31, y+32], fill=PALETTE["INK"]),
-            d.line([x+16, y+20, x+20, y+20], fill=PALETTE["RED"], width=2),
-            d.line([x+18, y+18, x+18, y+22], fill=PALETTE["RED"], width=2)
-        )),
-        ("YEMEN · SAUDI", "R", "Riyadh intercepts 3 Houthi missiles", "Emergency alerts sounded in the Saudi capital for a third night.", "Al Jazeera", lambda d, x, y: (
-            d.arc([x+12, y+12, x+32, y+32], 180, 270, fill=PALETTE["RED"], width=2),
-            d.line([x+10, y+28, x+18, y+20], fill=PALETTE["INK"], width=2),
-            d.line([x+14, y+30, x+22, y+22], fill=PALETTE["INK"], width=2),
-            d.line([x+18, y+32, x+26, y+24], fill=PALETTE["INK"], width=2)
-        )),
-        ("SINALOA · MEXICO", "C", "Mexico captures cartel boss Chapo Isidro", "The FBI Top Ten fugitive, with a $5M reward, was seized in Guasave.", "AP · Al Jazeera", lambda d, x, y: (
-            d.ellipse([x+12, y+12, x+32, y+32], outline=PALETTE["RED"], width=2),
-            d.text((x+15, y+16), "$", fill=PALETTE["INK"], font=F("sansb", 9)),
-            d.polygon([(x+26, y+12), (x+28, y+16), (x+32, y+17), (x+29, y+20), (x+30, y+24), (x+26, y+22), (x+22, y+24), (x+23, y+20), (x+20, y+17), (x+24, y+16)], fill=PALETTE["AMBER"])
-        )),
-        ("INDONESIA · TRADE", "C", "Indonesia and EU sign trade pact", "The deal lifts 98.5% of tariffs on EU goods, after a decade of talks.", "Euronews", lambda d, x, y: (
-            d.rectangle([x+10, y+14, x+22, y+26], fill=PALETTE["DBLUE"]),
-            d.ellipse([x+14, y+18, x+18, y+22], outline=PALETTE["SAND"], width=1),
-            d.rectangle([x+22, y+14, x+34, y+26], fill=PALETTE["WHITE"], outline=PALETTE["LINE"]),
-            d.rectangle([x+22, y+20, x+34, y+26], fill=PALETTE["RED"])
-        )),
-        ("IRAQ · DISASTER", "C", "Basra power-station fire kills 4", "Thirty-five people were injured as the fire shut the plant.", "Reuters", lambda d, x, y: (
-            d.polygon([(x+14, y+28), (x+26, y+12), (x+38, y+28)], outline=PALETTE["LINE"], width=2),
-            d.line([x+26, y+16, x+26, y+28], fill=PALETTE["LINE"], width=2),
-            d.ellipse([x+22, y+14, x+28, y+22], fill=PALETTE["RED"])
-        )),
-        ("INDONESIA · DISASTER", "C", "Candy-factory fire near Jakarta", "Three dead, four hurt and 36 missing in Banten province.", "The Guardian", lambda d, x, y: (
-            d.rectangle([x+12, y+18, x+34, y+30], fill=PALETTE["GREY"]),
-            d.polygon([(x+12, y+18), (x+19, y+12), (x+27, y+18), (x+34, y+12), (x+34, y+18)], fill=PALETTE["LINE"]),
-            d.ellipse([x+20, y+10, x+26, y+18], fill=PALETTE["RED"])
-        )),
-        ("BANGLADESH · LABOUR", "C", "80 garment factories close", "Wage sit-ins idled plants in Savar and Ashulia; 96 people were arrested.", "Daily Star · TBS", lambda d, x, y: (
-            d.rectangle([x+10, y+16, x+34, y+30], fill=PALETTE["GREY"]),
-            d.ellipse([x+16, y+12, x+20, y+16], fill=PALETTE["INK"]),
-            d.ellipse([x+22, y+12, x+26, y+16], fill=PALETTE["INK"]),
-            d.ellipse([x+28, y+12, x+32, y+16], fill=PALETTE["INK"]),
-            d.rectangle([x+12, y+20, x+18, y+30], fill=PALETTE["WHITE"]),
-            d.rectangle([x+26, y+20, x+32, y+30], fill=PALETTE["WHITE"])
-        )),
-        ("LONDON · RUGBY", "C", "England beat All Blacks 37-12", "A record 25-point margin at Twickenham; back-to-back wins, first since 2003.", "Reuters · AP", lambda d, x, y: (
-            d.ellipse([x+14, y+16, x+32, y+28], fill=PALETTE["SAND"], outline=PALETTE["INK"]),
-            d.line([x+23, y+16, x+23, y+28], fill=PALETTE["INK"]),
-            d.line([x+19, y+20, x+27, y+24], fill=PALETTE["WHITE"]),
-            d.line([x+19, y+24, x+27, y+20], fill=PALETTE["WHITE"])
-        )),
-        ("SPACE", "C", "BepiColombo enters Mercury orbit", "ESA's twin craft end an eight-year cruise - only the second mission to orbit Mercury.", "ESA via AP", lambda d, x, y: (
-            d.ellipse([x+14, y+16, x+26, y+28], fill=PALETTE["GREY"]),
-            d.arc([x+10, y+12, x+32, y+32], 0, 360, fill=PALETTE["LINE"]),
-            d.rectangle([x+28, y+14, x+32, y+18], fill=PALETTE["RED"])
-        ))
+    MINIS = [
+        ("GULF OF FINLAND · SECURITY", "C", "Drones hit Russian ship off Finland", "A Kaliningrad-bound vessel caught fire; Helsinki restricts the gulf's airspace and waters.", "AFP", "ship"),
+        ("GAZA", "C", "Four killed by Israeli fire", "Three died in a drone strike on a food vehicle in Gaza City; one was shot in Jabalia.", "AFP · Reuters", "truck"),
+        ("YEMEN · SAUDI", "R", "Riyadh intercepts 3 Houthi missiles", "Emergency alerts sounded in the Saudi capital for a third night.", "Al Jazeera", "missiles"),
+        ("SINALOA · MEXICO", "C", "Mexico captures cartel boss Chapo Isidro", "The FBI Top Ten fugitive, with a $5M reward, was seized in Guasave.", "AP · Al Jazeera", "badge5m"),
+        ("INDONESIA · TRADE", "C", "Indonesia and EU sign trade pact", "The deal lifts 98.5% of tariffs on EU goods, after a decade of talks.", "Euronews", "flags"),
+        ("IRAQ · DISASTER", "C", "Basra power-station fire kills 4", "Thirty-five people were injured as the fire shut the plant.", "Reuters", "pylon"),
+        ("INDONESIA · DISASTER", "C", "Candy-factory fire near Jakarta", "Three dead, four hurt and 36 missing in Banten province.", "The Guardian", "factory"),
+        ("BANGLADESH · LABOUR", "C", "80 garment factories close", "Wage sit-ins idled plants in Savar and Ashulia; 96 people were arrested.", "Daily Star · TBS", "crowd"),
+        ("LONDON · RUGBY", "C", "England beat All Blacks 37-12", "A record 25-point margin at Twickenham; back-to-back wins, first since 2003.", "Reuters · AP", "rugby"),
+        ("SPACE", "C", "BepiColombo enters Mercury orbit", "ESA's twin craft end an eight-year cruise - only the second mission to orbit Mercury.", "ESA via AP", "planet")
     ]
-
-    for i, (tag, b_lvl, headline, deck, src, draw_icon) in enumerate(minis):
+    for i, (tag, lvl, headline, deck, source, icon) in enumerate(MINIS):
         col = i % 5
         row = i // 5
-        x = 24 + col * 197
-        y = 524 if row == 0 else 646
-        w = 189
-        h = 114
+        x = X(24 + col * 197)
+        y = X(520 if row == 0 else 644)
+        w = X(189)
+        h = X(118)
+        
+        d.rectangle([x, y, x + w, y + h], fill=PALETTE["CARD"], outline=PALETTE["LINE"], width=X(1))
+        d.rectangle([x, y, x + w, y + X(30)], fill="#EFE9D6")
+        d.line([x, y + X(30), x + w, y + X(30)], fill=PALETTE["LINE"], width=X(1))
+        
+        # Icon area left X(6), width X(44)
+        ix = x + X(6)
+        iy = y + X(3)
+        iw = X(44)
+        ih = X(24)
+        
+        if icon == "ship":
+            d.rectangle([ix + X(4), iy + X(10), ix + X(36), iy + X(20)], fill="#7F8C8D")
+            d.ellipse([ix + X(18), iy + X(2), ix + X(24), iy + X(8)], fill=PALETTE["RED"])
+        elif icon == "truck":
+            d.rectangle([ix + X(4), iy + X(8), ix + X(28), iy + X(20)], fill="#7F8C8D")
+            d.rectangle([ix + X(28), iy + X(12), ix + X(38), iy + X(20)], fill="#BDC3C7")
+            d.ellipse([ix + X(8), iy + X(19), ix + X(14), iy + X(25)], fill="#2C3E50")
+            d.ellipse([ix + X(30), iy + X(19), ix + X(36), iy + X(25)], fill="#2C3E50")
+            d.rectangle([ix + X(14), iy + X(11), ix + X(18), iy + X(17)], fill=PALETTE["RED"])
+            d.rectangle([ix + X(12), iy + X(13), ix + X(20), iy + X(15)], fill=PALETTE["RED"])
+        elif icon == "missiles":
+            d.line([ix + X(4), iy + X(22), ix + X(36), iy + X(6)], fill=PALETTE["INK"], width=X(2))
+            d.line([ix + X(8), iy + X(24), ix + X(40), iy + X(8)], fill=PALETTE["INK"], width=X(2))
+            d.line([ix + X(2), iy + X(20), ix + X(34), iy + X(4)], fill=PALETTE["INK"], width=X(2))
+            d.arc([ix + X(20), iy + X(2), ix + X(42), iy + X(22)], start=180, end=270, fill=PALETTE["RED"], width=X(2))
+        elif icon == "badge5m":
+            d.ellipse([ix + X(4), iy + X(2), ix + X(24), iy + X(22)], outline=PALETTE["RED"], width=X(2))
+            d.polygon([ix+X(14),iy+X(4), ix+X(16),iy+X(9), ix+X(21),iy+X(9), ix+X(17),iy+X(12), ix+X(19),iy+X(17), ix+X(14),iy+X(14), ix+X(9),iy+X(17), ix+X(11),iy+X(12), ix+X(7),iy+X(9), ix+X(12),iy+X(9)], fill=PALETTE["AMBER"])
+            d.text((ix + X(26), iy + X(6)), "$5M", fill=PALETTE["RED"], font=F("sansb", 8))
+        elif icon == "flags":
+            d.rectangle([ix + X(4), iy + X(4), ix + X(20), iy + X(20)], fill="#2980B9")
+            d.ellipse([ix + X(8), iy + X(8), ix + X(16), iy + X(16)], fill="#F1C40F")
+            d.rectangle([ix + X(22), iy + X(4), ix + X(38), iy + X(20)], fill="#BDC3C7")
+            d.rectangle([ix + X(22), iy + X(4), ix + X(38), iy + X(12)], fill=PALETTE["RED"])
+        elif icon == "pylon":
+            d.polygon([ix+X(22),iy+X(2), ix+X(8),iy+X(24), ix+X(36),iy+X(24)], outline=PALETTE["INK"], width=X(1))
+            d.ellipse([ix+X(18),iy+X(12), ix+X(26),iy+X(22)], fill=PALETTE["RED"])
+        elif icon == "factory":
+            d.rectangle([ix+X(4), iy+X(10), ix+X(36), iy+X(22)], fill="#7F8C8D")
+            d.polygon([ix+X(4),iy+X(10), ix+X(12),iy+X(2), ix+X(20),iy+X(10), ix+X(28),iy+X(2), ix+X(36),iy+X(10)], fill="#95A5A6")
+            d.ellipse([ix+X(28),iy+X(2), ix+X(34),iy+X(10)], fill=PALETTE["RED"])
+        elif icon == "crowd":
+            d.rectangle([ix+X(4), iy+X(12), ix+X(20), iy+X(22)], fill="#7F8C8D")
+            for dx_dot in [X(24), X(29), X(34)]:
+                d.ellipse([ix+dx_dot, iy+X(16), ix+dx_dot+X(4), iy+X(20)], fill=PALETTE["INK"])
+        elif icon == "rugby":
+            d.ellipse([ix+X(4), iy+X(4), ix+X(30), iy+X(22)], fill="#E67E22", outline=PALETTE["INK"], width=X(1))
+            d.line([ix+X(17), iy+X(4), ix+X(17), iy+X(22)], fill="#FFFFFF", width=X(1))
+            d.line([ix+X(34), iy+X(2), ix+X(34), iy+X(24)], fill=PALETTE["INK"], width=X(1))
+            d.line([ix+X(38), iy+X(2), ix+X(38), iy+X(24)], fill=PALETTE["INK"], width=X(1))
+        elif icon == "planet":
+            d.ellipse([ix+X(10), iy+X(4), ix+X(26), iy+X(20)], fill="#7F8C8D")
+            d.arc([ix+X(4), iy+X(2), ix+X(32), iy+X(22)], start=30, end=210, fill=PALETTE["INK"], width=X(1))
+            d.rectangle([ix+X(30), iy+X(10), ix+X(34), iy+X(14)], fill=PALETTE["RED"])
 
-        # Card background & border
-        d.rectangle([x, y, x+w, y+h], fill=PALETTE["CARD"], outline=PALETTE["LINE"])
-
-        # Icon strip
-        d.rectangle([x, y, x+w, y+34], fill="#EFE9D6")
-        d.line([x, y+34, x+w, y+34], fill=PALETTE["LINE"])
-        draw_icon(d, x, y)
-
-        # Tag line & badge chip
-        d.text((x+8, y+38), tag, fill=PALETTE["RED"], font=F("sansb", 8))
-        badge(d, x + w - 32, y+37, b_lvl)
-
-        # Headline (up to 2 lines)
-        hl_lines = wrap(d, headline, F("sansb", 11.5), w - 16)
-        hy = y + 50
-        for line in hl_lines[:2]:
-            d.text((x+8, hy), line, fill=PALETTE["INK"], font=F("sansb", 11.5))
-            hy += 13
-
-        # Deck (up to 2 lines)
-        deck_lines = wrap(d, deck, F("sans", 9), w - 16)
-        for line in deck_lines[:2]:
-            d.text((x+8, hy), line, fill=PALETTE["INK"], font=F("sans", 9))
-            hy += 11
-
-        # Source at bottom
-        d.text((x+8, y + h - 13), src, fill=PALETTE["GREY"], font=F("sans", 8))
+        # Tag below the strip
+        d.text((x + X(8), y + X(35)), tag, fill=PALETTE["RED"], font=F("sansb", 8))
+        
+        # Badge chip
+        badge(d, 24 + col * 197 + 189 - 70, (520 if row == 0 else 644) + 33, lvl)
+        
+        # Headline
+        hl_font = F("sansb", 11.5)
+        hl_size = 11.5
+        hl_lines = wrap(d, headline, hl_font, X(173))
+        if len(hl_lines) > 2:
+            hl_font = F("sansb", hl_size - 0.5)
+            hl_lines = wrap(d, headline, hl_font, X(173))
+            if len(hl_lines) > 2:
+                hl_lines = hl_lines[:2]
+        
+        hx = x + X(8)
+        hy = y + X(49)
+        for hline in hl_lines:
+            d.text((hx, hy), hline, fill=PALETTE["INK"], font=hl_font)
+            hy += X(13)
+        
+        # Deck
+        deck_font = F("sans", 8.5)
+        deck_size = 8.5
+        deck_lines = wrap(d, deck, deck_font, X(173))
+        if len(deck_lines) > 3:
+            deck_lines = deck_lines[:3]
+        
+        dy = hy + X(2)
+        for dline in deck_lines:
+            d.text((hx, dy), dline, fill=PALETTE["INK"], font=deck_font)
+            dy += X(10.5)
+        
+        # Source
+        d.text((x + X(8), y + h - X(12)), source, fill=PALETTE["GREY"], font=F("sans", 8))
 
 if __name__ == "__main__":
     main()
