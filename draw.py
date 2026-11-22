@@ -305,8 +305,8 @@ def draw_bottom(d):
 
 def draw_footer(d):
     boxes = [
-        (X(24), X(560), "DATE CHECK", "Held back: anything we could not date to Saturday - one APEC leaders' claim among them. Not yet: COP31's approval session (Sun 06:00 GMT) and the Las Vegas race are set, not done, and are marked as such."),
-        (X(568), X(1000), "HOW WE CHECKED", "CONFIRMED = two or more major outlets; REPORTED / 1 outlet = a single source, badged as such. Every story happened or was first reported on Saturday 21 November 2026 (Wikipedia Current Events and the named outlets). Original drawings, no photos. Map is schematic.")
+        (X(24), X(560), "DATE CHECK", "Held back: anything not datable to Saturday - one APEC claim among them. Not yet: COP31's approval session (Sun 06:00 GMT) and the Las Vegas race are set, not done."),
+        (X(568), X(1000), "HOW WE CHECKED", "CONFIRMED = 2+ major outlets; REPORTED / 1 outlet = one source, badged as such. All stories dated Sat 21 Nov 2026. Original drawings, no photos; map schematic.")
     ]
     for x1, x2, heading, body in boxes:
         d.rectangle([x1, X(978), x2, X(1018)], fill=PALETTE["CARD"], outline=PALETTE["LINE"])
@@ -522,7 +522,7 @@ def draw_leads(d):
 
 def draw_minis(d):
     MINIS = [
-        ("GULF OF FINLAND · SECURITY", "C", "Drones hit Russian ship off Finland", "A Kaliningrad-bound vessel caught fire; Helsinki restricts the gulf's airspace and waters.", "AFP", "ship"),
+        ("GULF OF FINLAND", "C", "Drones hit Russian ship off Finland", "A Kaliningrad-bound vessel caught fire; Helsinki restricts the gulf's airspace and waters.", "AFP", "ship"),
         ("GAZA", "C", "Four killed by Israeli fire", "Three died in a drone strike on a food vehicle in Gaza City; one was shot in Jabalia.", "AFP · Reuters", "truck"),
         ("YEMEN · SAUDI", "R", "Riyadh intercepts 3 Houthi missiles", "Emergency alerts sounded in the Saudi capital for a third night.", "Al Jazeera", "missiles"),
         ("SINALOA · MEXICO", "C", "Mexico captures cartel boss Chapo Isidro", "The FBI Top Ten fugitive, with a $5M reward, was seized in Guasave.", "AP · Al Jazeera", "badge5m"),
