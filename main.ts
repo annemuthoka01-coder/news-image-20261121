@@ -1,54 +1,28 @@
-/**
- * main.ts
- * Copies entry.png to process.env.MAKEFUN_OUTPUT_DIR or /output.
- * Usage:
- *   MAKEFUN_OUTPUT_DIR=out node main.ts
- */
-
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const here = path.dirname(fileURLToPath(import.meta.url));
 
 function main() {
-  const src = path.join(__dirname, 'entry.png');
+  const src = path.join(here, 'entry.png');
   const outDir = process.env.MAKEFUN_OUTPUT_DIR || '/output';
-
   if (!fs.existsSync(src)) {
-    console.error(`Error: Source file ${src} does not exist.`);
+    console.error('Error: entry.png not found next to main.ts');
     process.exit(1);
   }
-
+  fs.mkdirSync(outDir, { recursive: true });
   const dest = path.join(outDir, 'entry.png');
-
-  // Resolve realpaths if they exist to check if src and dest are the same file
-  try {
-    const srcReal = fs.realpathSync(src);
-    let destReal = '';
-    try {
-      destReal = fs.realpathSync(dest);
-    } catch {}
-    if (srcReal === destReal) {
-      console.error(`Error: Source and destination are the same file (${src}).`);
-      process.exit(1);
-    }
-  } catch (e) {
-    // If realpath fails (e.g. dest doesn't exist yet), that's fine.
+  if (path.resolve(src) !== path.resolve(dest)) {
+    fs.copyFileSync(src, dest);
   }
-
-  if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir, { recursive: true });
-  }
-
-  fs.copyFileSync(src, dest);
-
-  const srcStat = fs.statSync(src);
-  const destStat = fs.statSync(dest);
-
-  if (srcStat.size !== destStat.size) {
-    console.error(`Error: Copied size mismatch (${destStat.size} vs expected ${srcStat.size}).`);
+  const a = fs.statSync(src).size;
+  const b = fs.statSync(dest).size;
+  if (a !== b) {
+    console.error('Error: copied size mismatch');
     process.exit(1);
   }
-
-  console.log(`Successfully copied entry.png to ${dest} (${srcStat.size} bytes).`);
+  console.log('Copied entry.png to ' + dest + ' (' + a + ' bytes)');
 }
 
 main();
