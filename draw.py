@@ -176,6 +176,151 @@ def draw_stats(d):
             d.text((bx + X(10), ly), line, fill=PALETTE["INK"], font=font_lbl)
             ly += X(11)
 
+def draw_bottom(d):
+    # Headings at y766
+    d.text((X(24), X(766)), "WHERE IT HAPPENED", fill=PALETTE["RED"], font=F("sansb", 12))
+    d.text((X(400), X(766)), "ALSO ON SATURDAY - 27 MORE", fill=PALETTE["RED"], font=F("sansb", 12))
+    
+    # MAP panel rectangle x24-388, y784-924
+    d.rectangle([X(24), X(784), X(388), X(924)], fill="#DCE9EC", outline=PALETTE["LINE"])
+    
+    # Continents as SAND-filled polygons with LINE outline
+    continents_raw = [
+        # North America
+        [(2,8),(20,4),(30,6),(28,12),(24,14),(26,18),(20,22),(16,20),(12,16),(6,14),(2,12)],
+        # South America
+        [(22,24),(30,23),(32,28),(28,35),(24,33),(21,28)],
+        # Africa
+        [(46,16),(58,15),(62,20),(58,30),(52,33),(47,28),(45,21)],
+        # Europe
+        [(44,6),(56,4),(60,8),(55,12),(47,12),(43,9)],
+        # Asia
+        [(58,4),(88,3),(97,8),(92,14),(84,13),(80,19),(74,16),(70,12),(62,13),(58,8)],
+        # SE Asia isles
+        [(80,22),(86,21),(88,24),(82,25)],
+        # Australia
+        [(84,27),(95,26),(97,31),(88,33),(83,30)]
+    ]
+    for poly in continents_raw:
+        pts = [(X(24 + rx * 3.64), X(784 + ry * 3.89)) for rx, ry in poly]
+        d.polygon(pts, fill=PALETTE["SAND"], outline=PALETTE["LINE"])
+        
+    # DOTS
+    dots = [
+        (1, 66, 15), (2, 24, 27), (3, 57, 11), (4, 55, 5),
+        (5, 60, 14), (6, 66, 17), (7, 10, 16), (8, 85, 23),
+        (9, 64, 13), (10, 83, 25), (11, 76, 15), (12, 46, 6)
+    ]
+    for num, rx, ry in dots:
+        cx = X(24 + rx * 3.64)
+        cy = X(784 + ry * 3.89)
+        r = X(7.5)
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=PALETTE["RED"])
+        # White F("sansb",7.5) number centred on it
+        f_dot = F("sansb", 7.5)
+        bbox = d.textbbox((0, 0), str(num), font=f_dot)
+        tw = bbox[2] - bbox[0]
+        th = bbox[3] - bbox[1]
+        d.text((cx - tw / 2, cy - th / 2 - 1), str(num), fill="#FFFFFF", font=f_dot)
+        
+    # KEY under map, F("sans",8) INK at x24, three lines starting y932, step 13
+    key_lines = [
+        "1 Bahrain · 2 Peru · 3 Antalya · 4 Gulf of Finland",
+        "5 Gaza · 6 Riyadh · 7 Sinaloa · 8 Jakarta · 9 Basra",
+        "10 Banten · 11 Dhaka · 12 London · 13 Mercury (in orbit)"
+    ]
+    ky = X(932)
+    for kl in key_lines:
+        d.text((X(24), ky), kl, fill=PALETTE["INK"], font=F("sans", 8))
+        ky += X(13)
+        
+    # LIST ITEMS
+    items_col1 = [
+        (14, "Tokyo", "Saudi crude stored in Japan to triple to 24M barrels (Japan Today)"),
+        (15, "Paris", "82,500 march in a sixth Saturday of cost-of-living protests (Reuters)"),
+        (16, "Taipei", "Short-selling curbed after TAIEX's worst week since 1991 · 1 outlet"),
+        (17, "Geneva", "128 nations back killer-robot arms talks · 1 outlet"),
+        (18, "Balochistan", "Pakistan says 15 militants killed in raid · 1 outlet"),
+        (19, "Rabat", "All 54 CAF members back Infantino for FIFA vote · 1 outlet"),
+        (20, "Las Vegas", "Verstappen takes Grand Prix pole · 1 outlet"),
+        (21, "Dublin", "Ireland edge South Africa 20-17 · 1 outlet"),
+        (22, "Newcastle", "Arsenal held 2-2 at Newcastle · 1 outlet"),
+        (23, "Leeds", "Leeds beat Chelsea 4-1 · 1 outlet"),
+        (24, "Cleveland", "Harden passes Bryant on NBA 50-point list (ESPN)"),
+        (25, "Washington", "Second judge blocks Trump's 250-ft arch (UPI)"),
+        (26, "California", "Palisades Fire arsonist convicted at retrial · 1 outlet"),
+        (27, "Kyiv", "Zelensky: Crimean Bridge attacks a justified reply · 1 outlet")
+    ]
+    
+    items_col2 = [
+        (28, "Beijing", "Nvidia halts H200 chip exports to China · 1 outlet"),
+        (29, "Washington", "Vance declines to back Trump's Iran claim · 1 outlet"),
+        (30, "Delhi", "Modi to SCO forum: cultural ties serve peace · 1 outlet"),
+        (31, "Zagreb", "Thousands protest after hospital death · 1 outlet"),
+        (32, "Pas-de-Calais", "Floods swamp 850 homes, shut 85 roads · 1 outlet"),
+        (33, "Ethiopia", "About 700,000 displaced by conflict · 1 outlet"),
+        (34, "Blue Nile", "Sudan army says security being restored (Anadolu) · 1 outlet"),
+        (35, "Fukushima", "Snow warning; 700 homes lose power (Kyodo) · 1 outlet"),
+        (36, "Bali", "Russian Interpol fugitive refused entry (Antara) · 1 outlet"),
+        (37, "Melbourne", "Cricket Australia backs captain Cummins (AFP)"),
+        (38, "Muscat", "India U19s beat Pakistan by 1 wicket, record 9th Asia Cup · 1 outlet"),
+        (39, "Dhaka", "Border guards deploy 90 platoons, 7 districts (Dhaka Tribune) · 1 outlet"),
+        (40, "Pabna", "BNP-Awami League clashes injure several (UNB) · 1 outlet")
+    ]
+    
+    def draw_list_column(x_start, items):
+        y = X(786)
+        col_w = X(294)
+        f_num = F("sansb", 7.5)
+        f_body = F("sans", 7.5)
+        
+        for num, place, text in items:
+            num_str = str(num)
+            num_w = d.textbbox((0, 0), num_str, font=f_num)[2]
+            space_w = d.textbbox((0, 0), " ", font=f_num)[2]
+            
+            full_text = f"{place} - {text}"
+            lines = wrap(d, full_text, f_body, col_w - num_w - space_w)
+            if not lines:
+                lines = [full_text]
+                
+            d.text((x_start, y), num_str, fill=PALETTE["RED"], font=f_num)
+            d.text((x_start + num_w + space_w, y), lines[0], fill=PALETTE["INK"], font=f_body)
+            y += X(10.0)
+            
+            for l in lines[1:]:
+                d.text((x_start + X(14), y), l, fill=PALETTE["INK"], font=f_body)
+                y += X(10.0)
+                
+            y += X(1.5)
+        return y
+
+    y1_end = draw_list_column(X(400), items_col1)
+    y2_end = draw_list_column(X(706), items_col2)
+    
+    print(f"Col 1 final y: {y1_end} (max allowed {X(968)})")
+    print(f"Col 2 final y: {y2_end} (max allowed {X(968)})")
+    if y1_end > X(968) or y2_end > X(968):
+        print("OVERFLOW")
+
+def draw_footer(d):
+    boxes = [
+        (X(24), X(560), "DATE CHECK", "Held back: anything we could not date to Saturday - one APEC leaders' claim among them. Not yet: COP31's approval session (Sun 06:00 GMT) and the Las Vegas race are set, not done, and are marked as such."),
+        (X(568), X(1000), "HOW WE CHECKED", "CONFIRMED = two or more major outlets; REPORTED / 1 outlet = a single source, badged as such. Every story happened or was first reported on Saturday 21 November 2026 (Wikipedia Current Events and the named outlets). Original drawings, no photos. Map is schematic.")
+    ]
+    for x1, x2, heading, body in boxes:
+        d.rectangle([x1, X(978), x2, X(1018)], fill=PALETTE["CARD"], outline=PALETTE["LINE"])
+        d.text((x1 + X(8), X(982)), heading, fill=PALETTE["RED"], font=F("sansb", 9.5))
+        
+        body_lines = wrap(d, body, F("sans", 8.5), (x2 - x1) - X(16))
+        if len(body_lines) > 2:
+            body_lines = body_lines[:2]
+            
+        by = X(995)
+        for bl in body_lines:
+            d.text((x1 + X(8), by), bl, fill=PALETTE["INK"], font=F("sans", 8.5))
+            by += X(10.5)
+
 def main():
     W = 1024 * S
     H = 1024 * S
@@ -188,6 +333,8 @@ def main():
     draw_stats(d)
     draw_leads(d)
     draw_minis(d)
+    draw_bottom(d)
+    draw_footer(d)
 
     im_resized = im.resize((1024, 1024), Image.LANCZOS)
     im_resized.save("entry.png", "PNG")
@@ -488,3 +635,4 @@ def draw_minis(d):
 
 if __name__ == "__main__":
     main()
+
